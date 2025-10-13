@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Makip">
 
-        <!-- SplashActivity es ahora la actividad de INICIO -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -22,11 +21,13 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity es ahora una actividad normal -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <!-- El <intent-filter> fue eliminado de aquí -->
 
     </application>
 
