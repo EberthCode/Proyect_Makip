@@ -1,8 +1,8 @@
 // LoginActivity.kt
-package com.example.makip // Asegúrate de cambiar esto a tu package real
+package com.example.makip
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-// Importa las vistas que usarás, aunque en este ejemplo no haremos mucho con ellas
+import android.content.Intent
 import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
@@ -35,11 +35,11 @@ class LoginActivity : AppCompatActivity() {
             // Log.d("LoginActivity", "Email: $email, Password: $password")
         }
 
-        // 3. Ejemplo: Configurar un listener para el texto de Sign Up
+        // 3. Configurar un listener para el texto de Sign Up
         signUpText.setOnClickListener {
-            // Aquí iría el código para navegar a la pantalla de registro
-            // val intent = Intent(this, SignUpActivity::class.java)
-            // startActivity(intent)
+            // Código para navegar a la pantalla de registro
+            val intent = Intent(this, RegisterActivity::class.java) // ¡Cambiamos aquí!
+            startActivity(intent)
         }
     }
 }
