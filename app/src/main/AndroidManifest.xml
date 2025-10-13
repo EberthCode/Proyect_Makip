@@ -37,7 +37,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".CatalogoActivity"
             android:exported="false"
             android:label="Dashboard"
             android:screenOrientation="portrait" />

@@ -23,11 +23,16 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private var videoPlayer: ExoPlayer? = null
+    private lateinit var authManager: AuthManager // Instancia del gestor de autenticación
+    private var isNavigationPending = false // Bandera para evitar doble navegación
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_splash)
+
+        // Inicializar el gestor de autenticación
+        authManager = AuthManager(this)
 
         initializePlayerAndVideo()
 
@@ -87,20 +92,33 @@ class SplashActivity : AppCompatActivity() {
         videoPlayer?.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 if (playbackState == Player.STATE_ENDED) {
-                    // Navega al Login después de una pequeña pausa final.
+                    // Evitar múltiples llamadas si el evento se dispara varias veces.
+                    if (isNavigationPending) return
+
+                    // Navega a la siguiente pantalla después de una pequeña pausa final.
                     Handler(Looper.getMainLooper()).postDelayed({
-                        navigateToLogin()
+                        // Llama a la nueva función que decide a dónde ir.
+                        decideNextActivity()
                     }, DELAY_AFTER_VIDEO_END_MS)
+
+                    isNavigationPending = true // Marca la navegación como pendiente/en curso
                 }
             }
         })
     }
 
     /**
-     * Lanza la LoginActivity y finaliza la SplashActivity.
+     * Decide si ir al Catálogo (MainActivity) o a la pantalla de Login,
+     * basándose en el estado de autenticación.
      */
-    private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
+    private fun decideNextActivity() {
+        val nextActivityClass = if (authManager.isLoggedIn()) {
+            CatalogoActivity::class.java // Usuario logueado: ir al catálogo
+        } else {
+            LoginActivity::class.java // Usuario no logueado: ir a login
+        }
+
+        val intent = Intent(this, nextActivityClass)
         startActivity(intent)
         finish()
     }

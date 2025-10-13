@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".CatalogoActivity">
+
+    <TextView
+        android:id="@+id/text_welcome_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="Hola, NombreUsuario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/icon_cart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon_cart"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_shopping_cart_white"
+        android:contentDescription="Carrito de compras"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_welcome_message"
+        app:layout_constraintBottom_toBottomOf="@id/text_welcome_message"/>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_search_background"
+        app:iconifiedByDefault="false"
+        app:queryHint="Buscar productos..."
+        app:queryBackground="@android:color/transparent"
+        app:defaultQueryHint="search_products_hint"
+        app:layout_constraintTop_toBottomOf="@id/text_welcome_message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:backgroundTint="#2C2C2C" /> <HorizontalScrollView
+    android:id="@+id/category_chips_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:scrollbars="none"
+    app:layout_constraintTop_toBottomOf="@id/search_bar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipSpacingHorizontal="8dp"
+        app:selectionRequired="false"
+        app:singleSelection="false">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_todos"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Todos"
+            android:textColor="@android:color/white"
+            app:chipBackgroundColor="#333333"
+            app:chipStrokeColor="@android:color/transparent"
+            app:checkedIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_ropa"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ropa"
+            android:textColor="@android:color/white"
+            app:chipBackgroundColor="#333333"
+            app:chipStrokeColor="@android:color/transparent"
+            app:checkedIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_accesorios"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accesorios"
+            android:textColor="@android:color/white"
+            app:chipBackgroundColor="#333333"
+            app:chipStrokeColor="@android:color/transparent"
+            app:checkedIconVisible="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_otros"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Otros"
+            android:textColor="@android:color/white"
+            app:chipBackgroundColor="#333333"
+            app:chipStrokeColor="@android:color/transparent"
+            app:checkedIconVisible="false" />
+
+    </com.google.android.material.chip.ChipGroup>
+</HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_catalog"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/category_chips_scroll_view"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        tools:listitem="@layout/item_product_card"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        app:itemIconTint="@color/selector_bottom_nav_white_grey"
+        app:itemTextColor="@color/selector_bottom_nav_white_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

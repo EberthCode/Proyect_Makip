@@ -12,17 +12,25 @@ import com.google.android.material.textfield.TextInputEditText
 class RegisterActivity : AppCompatActivity() {
 
     // Declaración de vistas
+    private lateinit var nameEditText: TextInputEditText
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var createAccountButton: MaterialButton
     private lateinit var logInText: TextView
     private lateinit var backButton: ImageButton
 
+    // DECLARACIÓN DEL GESTOR DE AUTENTICACIÓN
+    private lateinit var authManager: AuthManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        // INICIALIZAMOS EL GESTOR DE AUTENTICACIÓN
+        authManager = AuthManager(this)
+
         // Inicializar vistas
+        nameEditText = findViewById(R.id.edit_text_name)
         emailEditText = findViewById(R.id.edit_text_email)
         passwordEditText = findViewById(R.id.edit_text_password)
         createAccountButton = findViewById(R.id.button_create_account)
@@ -57,29 +65,39 @@ class RegisterActivity : AppCompatActivity() {
      * Lógica para manejar el registro de usuario.
      */
     private fun handleRegistration() {
+        val name = nameEditText.text.toString().trim()
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
-        if (email.isEmpty() || password.isEmpty()) {
+        // Validar que TODOS los campos estén completos
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Aquí iría tu lógica de registro real (validación, llamada a API, etc.)
-        Toast.makeText(this, "Registrando cuenta para $email...", Toast.LENGTH_LONG).show()
+        // --------------------------------------------------------
+        // LÓGICA DE REGISTRO USANDO AuthManager
+        // --------------------------------------------------------
 
-        // Tras el registro exitoso, puedes navegar a la pantalla principal o al login.
-        // val intent = Intent(this, MainActivity::class.java)
-        // startActivity(intent)
-        // finish()
+        // 1. Simular guardar el usuario localmente
+        // En una BD real, 'password' se hashearía antes de guardar.
+        authManager.registerUser(name, email, password)
+
+        // 2. Marcar la sesión como iniciada automáticamente tras el registro
+        authManager.setLoggedIn(true)
+
+        Toast.makeText(this, "Registro exitoso. ¡Bienvenido, $name!", Toast.LENGTH_LONG).show()
+
+        // Tras el registro exitoso, navegamos al Catálogo (MainActivity)
+        val intent = Intent(this, CatalogoActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     /**
      * Navega a la pantalla de Inicio de Sesión y finaliza esta actividad.
      */
     private fun navigateToLogin() {
-        // Al regresar, no necesitamos volver a crear la actividad de Login,
-        // pero usar un Intent garantiza que no haya problemas.
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
