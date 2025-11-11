@@ -41,6 +41,11 @@
             android:exported="false"
             android:label="Dashboard"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".CarritoActivity"
+            android:exported="false"
+            android:label="Carrito"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

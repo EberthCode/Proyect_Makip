@@ -1,35 +1,51 @@
 package com.example.makip
 
-import android.content.Intent // IMPORTANTE: Importar Intent para iniciar la nueva actividad
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CatalogoActivity : AppCompatActivity() {
 
-    // DESCOMENTADO: Declaración de la clase AuthManager
     private lateinit var authManager: AuthManager
-
+    private lateinit var cartViewModel: CartViewModel
+    private lateinit var productAdapter: ProductAdapter
     private lateinit var searchView: SearchView
+
     // Color para el hint del SearchView
     private val SEARCH_HINT_COLOR = Color.parseColor("#AAAAAA")
     private val TEXT_COLOR_WHITE = Color.WHITE
 
+    // Datos mock actualizados
+    private val mockProducts = listOf(
+        Product(1, "Camiseta", 25.00, "Ropa", R.drawable.ic_tshirt),
+        Product(2, "Sudadera", 45.00, "Ropa", R.drawable.ic_hoodie),
+        Product(3, "Gorra", 20.00, "Accesorios", R.drawable.ic_cap),
+        Product(4, "Taza", 15.00, "Otros", R.drawable.ic_mug),
+        Product(5, "Bolso", 30.00, "Accesorios", R.drawable.ic_bag),
+        Product(6, "Pegatina", 5.00, "Otros", R.drawable.ic_sticker),
+        Product(7, "Llavero", 8.00, "Otros", R.drawable.ic_keychain)
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // DESCOMENTADO: Inicialización de la clase AuthManager (usa el Context)
         authManager = AuthManager(this)
+        cartViewModel = ViewModelProvider(this)[CartViewModel::class.java]
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_catalogo)
@@ -44,11 +60,12 @@ class CatalogoActivity : AppCompatActivity() {
         searchView = findViewById(R.id.search_bar)
 
         // Lógica de UI
-        // LLAMADA ACTIVADA: Ahora usa el nombre guardado por AuthManager
         displayWelcomeMessage()
-
-        setupBottomNavigation() // Lógica de navegación con enlace a PerfilActivity
-        setupPlaceholderCatalog()
+        setupRecyclerView() // REEMPLAZADO: Ahora usa el ProductAdapter real
+        setupSearchView()
+        setupCategoryChips()
+        setupBottomNavigation()
+        setupCartIcon()
 
         // Solución de color para el hint de búsqueda (ejecutar después de la inflación)
         searchView.post {
@@ -56,40 +73,80 @@ class CatalogoActivity : AppCompatActivity() {
         }
     }
 
-    // --- LÓGICA DEL CATÁLOGO DE MAQUETAS ---
+    // --- NUEVAS FUNCIONALIDADES DEL CATÁLOGO ---
 
-    /**
-     * Configura el RecyclerView con un adaptador de prueba para mostrar maquetas de producto.
-     */
-    private fun setupPlaceholderCatalog() {
+    private fun setupRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_catalog)
-        recyclerView.adapter = PlaceholderAdapter()
-    }
-
-    /**
-     * Adaptador simple para inflar 10 vistas de item_product_card.xml (maquetas).
-     */
-    private class PlaceholderAdapter : RecyclerView.Adapter<PlaceholderViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceholderViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product_card, parent, false)
-            return PlaceholderViewHolder(view)
+        productAdapter = ProductAdapter(mockProducts) { product ->
+            // Añadir producto al carrito
+            cartViewModel.addProductToCart(product)
+            Toast.makeText(this, "${product.name} añadida al carrito", Toast.LENGTH_SHORT).show()
         }
 
-        override fun onBindViewHolder(holder: PlaceholderViewHolder, position: Int) {
-            // No se requiere lógica de binding; la vista es un placeholder estático.
+        recyclerView.apply {
+            adapter = productAdapter
+            layoutManager = GridLayoutManager(this@CatalogoActivity, 2)
         }
-
-        // Muestra 10 elementos de prueba
-        override fun getItemCount() = 10
     }
 
-    /**
-     * ViewHolder simple para el adaptador.
-     */
-    private class PlaceholderViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
 
-    // --- LÓGICA DE NAVEGACIÓN Y BÚSQUEDA ---
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterProducts(newText ?: "")
+                return true
+            }
+        })
+    }
+
+    private fun setupCategoryChips() {
+        val chipTodos = findViewById<com.google.android.material.chip.Chip>(R.id.chip_todos)
+        val chipRopa = findViewById<com.google.android.material.chip.Chip>(R.id.chip_ropa)
+        val chipAccesorios = findViewById<com.google.android.material.chip.Chip>(R.id.chip_accesorios)
+        val chipOtros = findViewById<com.google.android.material.chip.Chip>(R.id.chip_otros)
+
+        // Configurar chips para selección única
+        val chipGroup = findViewById<com.google.android.material.chip.ChipGroup>(R.id.chip_group_categories)
+
+        chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            when {
+                checkedIds.contains(R.id.chip_todos) -> filterByCategory("Todos")
+                checkedIds.contains(R.id.chip_ropa) -> filterByCategory("Ropa")
+                checkedIds.contains(R.id.chip_accesorios) -> filterByCategory("Accesorios")
+                checkedIds.contains(R.id.chip_otros) -> filterByCategory("Otros")
+                else -> filterByCategory("Todos") // Por defecto mostrar todos
+            }
+        }
+    }
+
+    private fun setupCartIcon() {
+        findViewById<ImageView>(R.id.icon_cart).setOnClickListener {
+            startActivity(Intent(this, CarritoActivity::class.java))
+        }
+    }
+
+    private fun filterProducts(query: String) {
+        val filtered = if (query.isEmpty()) {
+            mockProducts
+        } else {
+            mockProducts.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+        }
+        productAdapter.updateData(filtered)
+    }
+
+    private fun filterByCategory(category: String) {
+        val filtered = if (category == "Todos") {
+            mockProducts
+        } else {
+            mockProducts.filter { it.category == category }
+        }
+        productAdapter.updateData(filtered)
+    }
+
+    // --- MÉTODOS EXISTENTES MANTENIDOS ---
 
     private fun setupBottomNavigation() {
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -102,12 +159,18 @@ class CatalogoActivity : AppCompatActivity() {
                 R.id.nav_catalogo -> {
                     true // Ya estamos aquí
                 }
-                R.id.nav_carrito -> true
-                R.id.nav_pedidos -> true
+                R.id.nav_carrito -> {
+                    startActivity(Intent(this, CarritoActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                R.id.nav_pedidos -> {
+                    // TODO: Implementar actividad de pedidos
+                    Toast.makeText(this, "Próximamente: Pedidos", Toast.LENGTH_SHORT).show()
+                    true
+                }
                 R.id.nav_perfil -> {
-                    // CÓDIGO AÑADIDO: Enlace al PerfilActivity
                     startActivity(Intent(this, PerfilActivity::class.java))
-                    // Opcional: Deshabilita la animación para transiciones limpias entre tabs
                     overridePendingTransition(0, 0)
                     true
                 }
