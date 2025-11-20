@@ -46,6 +46,11 @@
             android:exported="false"
             android:label="Carrito"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".TrackingActivity"
+            android:exported="false"
+            android:label="Seguimiento de Pedido"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

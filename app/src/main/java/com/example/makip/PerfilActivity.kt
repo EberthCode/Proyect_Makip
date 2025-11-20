@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 
 class PerfilActivity : AppCompatActivity() {
@@ -29,13 +31,27 @@ class PerfilActivity : AppCompatActivity() {
             insets
         }
 
+        // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
+        // ----------------------------------------------------------------------
+
         // Configurar la UI
         displayUserName()
         setupProfileOptions()
+        setupBackButton()
 
         // Configurar el botón de Cerrar Sesión
         findViewById<Button>(R.id.btn_logout).setOnClickListener {
             logoutUser()
+        }
+    }
+
+    /** Configura el botón de retroceso para cerrar la actividad */
+    private fun setupBackButton() {
+        val backButton = findViewById<ImageButton>(R.id.btn_back)
+        backButton.setOnClickListener {
+            finish() // Cierra la pantalla actual y vuelve a la anterior
         }
     }
 

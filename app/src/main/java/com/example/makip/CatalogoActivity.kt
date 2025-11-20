@@ -3,9 +3,6 @@ package com.example.makip
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -50,18 +48,23 @@ class CatalogoActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_catalogo)
 
-        // Configuración de Insets (borde a borde)
+        // Configuración de Insets (borde a borde) para evitar que se tape la UI
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_layout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
+        // ----------------------------------------------------------------------
+
         searchView = findViewById(R.id.search_bar)
 
         // Lógica de UI
         displayWelcomeMessage()
-        setupRecyclerView() // REEMPLAZADO: Ahora usa el ProductAdapter real
+        setupRecyclerView()
         setupSearchView()
         setupCategoryChips()
         setupBottomNavigation()
@@ -165,8 +168,9 @@ class CatalogoActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_pedidos -> {
-                    // TODO: Implementar actividad de pedidos
-                    Toast.makeText(this, "Próximamente: Pedidos", Toast.LENGTH_SHORT).show()
+                    // --- CAMBIO REALIZADO AQUÍ, MI REY ---
+                    startActivity(Intent(this, TrackingActivity::class.java))
+                    overridePendingTransition(0, 0) // Transición suave igual que los demás
                     true
                 }
                 R.id.nav_perfil -> {
