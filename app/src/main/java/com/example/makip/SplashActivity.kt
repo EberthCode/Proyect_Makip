@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        
+
         // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
@@ -50,17 +50,18 @@ class SplashActivity : AppCompatActivity() {
         // Inicializar el gestor de autenticación
         authManager = AuthManager(this)
 
+        // Inicializar managers de persistencia
+        ProductManager.initialize(this)
+        OrderManager.initialize(this)
+
         initializePlayerAndVideo()
 
         // Inicia la reproducción del video después de un breve retraso.
-        Handler(Looper.getMainLooper()).postDelayed({
-            videoPlayer?.play()
-        }, DELAY_BEFORE_PLAYBACK_MS)
+        Handler(Looper.getMainLooper())
+                .postDelayed({ videoPlayer?.play() }, DELAY_BEFORE_PLAYBACK_MS)
     }
 
-    /**
-     * Configura el ExoPlayer, el recurso de video y sus oyentes.
-     */
+    /** Configura el ExoPlayer, el recurso de video y sus oyentes. */
     private fun initializePlayerAndVideo() {
         val playerView = findViewById<PlayerView>(R.id.player_view)
 
@@ -80,9 +81,7 @@ class SplashActivity : AppCompatActivity() {
         videoPlayer?.prepare()
     }
 
-    /**
-     * Aplica márgenes a la vista del reproductor para su posicionamiento y tamaño.
-     */
+    /** Aplica márgenes a la vista del reproductor para su posicionamiento y tamaño. */
     private fun applyVideoMargins(playerView: PlayerView) {
         val marginInPixels = (VIDEO_MARGIN_DP * resources.displayMetrics.density).toInt()
         val params = playerView.layoutParams as FrameLayout.LayoutParams
@@ -90,9 +89,7 @@ class SplashActivity : AppCompatActivity() {
         playerView.layoutParams = params
     }
 
-    /**
-     * Define el recurso de video a reproducir y la velocidad.
-     */
+    /** Define el recurso de video a reproducir y la velocidad. */
     private fun setupMediaItem() {
         val videoPath = "android.resource://$packageName/${R.raw.video_inicio}"
         val mediaItem = MediaItem.fromUri(Uri.parse(videoPath))
@@ -101,38 +98,44 @@ class SplashActivity : AppCompatActivity() {
         videoPlayer?.setPlaybackSpeed(PLAYBACK_SPEED)
     }
 
-    /**
-     * Agrega un Listener para detectar el final de la reproducción del video.
-     */
+    /** Agrega un Listener para detectar el final de la reproducción del video. */
     private fun addVideoPlaybackListener() {
-        videoPlayer?.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                if (playbackState == Player.STATE_ENDED) {
-                    // Evitar múltiples llamadas si el evento se dispara varias veces.
-                    if (isNavigationPending) return
+        videoPlayer?.addListener(
+                object : Player.Listener {
+                    override fun onPlaybackStateChanged(playbackState: Int) {
+                        if (playbackState == Player.STATE_ENDED) {
+                            // Evitar múltiples llamadas si el evento se dispara varias veces.
+                            if (isNavigationPending) return
 
-                    // Navega a la siguiente pantalla después de una pequeña pausa final.
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        // Llama a la nueva función que decide a dónde ir.
-                        decideNextActivity()
-                    }, DELAY_AFTER_VIDEO_END_MS)
+                            // Navega a la siguiente pantalla después de una pequeña pausa final.
+                            Handler(Looper.getMainLooper())
+                                    .postDelayed(
+                                            {
+                                                // Llama a la nueva función que decide a dónde ir.
+                                                decideNextActivity()
+                                            },
+                                            DELAY_AFTER_VIDEO_END_MS
+                                    )
 
-                    isNavigationPending = true // Marca la navegación como pendiente/en curso
+                            isNavigationPending =
+                                    true // Marca la navegación como pendiente/en curso
+                        }
+                    }
                 }
-            }
-        })
+        )
     }
 
     /**
-     * Decide si ir al Catálogo (MainActivity) o a la pantalla de Login,
-     * basándose en el estado de autenticación.
+     * Decide si ir al Catálogo (MainActivity) o a la pantalla de Login, basándose en el estado de
+     * autenticación.
      */
     private fun decideNextActivity() {
-        val nextActivityClass = if (authManager.isLoggedIn()) {
-            CatalogoActivity::class.java // Usuario logueado: ir al catálogo
-        } else {
-            LoginActivity::class.java // Usuario no logueado: ir a login
-        }
+        val nextActivityClass =
+                if (authManager.isLoggedIn()) {
+                    CatalogoActivity::class.java // Usuario logueado: ir al catálogo
+                } else {
+                    LoginActivity::class.java // Usuario no logueado: ir a login
+                }
 
         val intent = Intent(this, nextActivityClass)
         startActivity(intent)

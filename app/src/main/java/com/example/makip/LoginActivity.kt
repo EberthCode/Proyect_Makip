@@ -14,86 +14,77 @@ import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
 
-    // Declaración de vistas
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var loginButton: MaterialButton
     private lateinit var signUpText: TextView
-
-    // DECLARACIÓN DEL GESTOR DE AUTENTICACIÓN
     private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge() // Activar Borde a Borde
+        enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        // Ajustar padding para barras de sistema (Notificaciones/Navegación)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_login)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
-        // ----------------------------------------------------------------------
+        windowInsetsController.isAppearanceLightStatusBars = false
 
-        // INICIALIZAMOS EL GESTOR DE AUTENTICACIÓN
         authManager = AuthManager(this)
 
-        // 1. Inicializar las vistas
         emailEditText = findViewById(R.id.edit_text_email)
         passwordEditText = findViewById(R.id.edit_text_password)
-        // Usamos MaterialButton si tu layout lo usa, si no, usa Button
-        loginButton = findViewById(R.id.button_login) as MaterialButton
+        loginButton = findViewById(R.id.button_login)
         signUpText = findViewById(R.id.text_sign_up)
 
-        // 2. Configurar Listener para el botón de Log In
-        loginButton.setOnClickListener {
-            handleLogin()
-        }
+        loginButton.setOnClickListener { handleLogin() }
 
-        // 3. Configurar Listener para el texto de Sign Up
         signUpText.setOnClickListener {
-            // Navegar a la pantalla de registro
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-            finish() // Cierra la pantalla de Login al ir a Registro
+            startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
         }
     }
 
-    /**
-     * Lógica para manejar el inicio de sesión.
-     */
     private fun handleLogin() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, ingresa email y contraseña.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Por favor, ingresa email y contraseña.", Toast.LENGTH_SHORT)
+                    .show()
             return
         }
 
-        // --------------------------------------------------------
-        // LÓGICA DE LOGIN USANDO AuthManager (Simulación de BD)
-        // --------------------------------------------------------
-
-        if (authManager.validateCredentials(email, password)) {
-            // Credenciales válidas
+        // Verificar si es admin
+        if (authManager.validateAdminCredentials(email, password)) {
             authManager.setLoggedIn(true)
+            authManager.setUserRole(AuthManager.ROLE_ADMIN)
+            Toast.makeText(this, "Bienvenido, Administrador!", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, AdminActivity::class.java))
+            finish()
+            return
+        }
+
+        // Verificar usuario normal
+        if (authManager.validateCredentials(email, password)) {
+            authManager.setLoggedIn(true)
+            authManager.setUserRole(AuthManager.ROLE_USER)
             val name = authManager.getUserName()
-
-            Toast.makeText(this, "Inicio de sesión exitoso. Bienvenido, $name!", Toast.LENGTH_LONG).show()
-
-            // Redirigir al Catálogo (MainActivity)
-            val intent = Intent(this, CatalogoActivity::class.java)
-            startActivity(intent)
-            finish() // Cierra la actividad de Login
+            Toast.makeText(this, "Inicio de sesión exitoso. Bienvenido, $name!", Toast.LENGTH_LONG)
+                    .show()
+            startActivity(Intent(this, CatalogoActivity::class.java))
+            finish()
         } else {
-            // Credenciales inválidas
-            Toast.makeText(this, "Credenciales incorrectas o usuario no registrado.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                            this,
+                            "Credenciales incorrectas o usuario no registrado.",
+                            Toast.LENGTH_LONG
+                    )
+                    .show()
         }
     }
 }

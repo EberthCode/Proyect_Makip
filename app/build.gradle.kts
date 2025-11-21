@@ -42,9 +42,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.google.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("androidx.media3:media3-exoplayer:1.4.1")
     implementation("androidx.media3:media3-ui:1.4.1")
-   }
+    
+    // Gson para persistencia de datos
+    implementation("com.google.code.gson:gson:2.10.1")
+    
+    // Coil para cargar imágenes desde URLs
+    implementation("io.coil-kt:coil:2.4.0")
+}

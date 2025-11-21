@@ -28,17 +28,6 @@ class CatalogoActivity : AppCompatActivity() {
     private val SEARCH_HINT_COLOR = Color.parseColor("#AAAAAA")
     private val TEXT_COLOR_WHITE = Color.WHITE
 
-    // Datos mock actualizados
-    private val mockProducts = listOf(
-        Product(1, "Camiseta", 25.00, "Ropa", R.drawable.ic_tshirt),
-        Product(2, "Sudadera", 45.00, "Ropa", R.drawable.ic_hoodie),
-        Product(3, "Gorra", 20.00, "Accesorios", R.drawable.ic_cap),
-        Product(4, "Taza", 15.00, "Otros", R.drawable.ic_mug),
-        Product(5, "Bolso", 30.00, "Accesorios", R.drawable.ic_bag),
-        Product(6, "Pegatina", 5.00, "Otros", R.drawable.ic_sticker),
-        Product(7, "Llavero", 8.00, "Otros", R.drawable.ic_keychain)
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,20 +60,22 @@ class CatalogoActivity : AppCompatActivity() {
         setupCartIcon()
 
         // Solución de color para el hint de búsqueda (ejecutar después de la inflación)
-        searchView.post {
-            setSearchViewHintColor()
-        }
+        searchView.post { setSearchViewHintColor() }
     }
 
     // --- NUEVAS FUNCIONALIDADES DEL CATÁLOGO ---
 
     private fun setupRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_catalog)
-        productAdapter = ProductAdapter(mockProducts) { product ->
-            // Añadir producto al carrito
-            cartViewModel.addProductToCart(product)
-            Toast.makeText(this, "${product.name} añadida al carrito", Toast.LENGTH_SHORT).show()
-        }
+
+        // Usar ProductManager en lugar de mockProducts
+        productAdapter =
+                ProductAdapter(ProductManager.getProducts()) { product ->
+                    // Añadir producto al carrito usando CartManager
+                    CartManager.addProduct(product)
+                    Toast.makeText(this, "${product.name} añadida al carrito", Toast.LENGTH_SHORT)
+                            .show()
+                }
 
         recyclerView.apply {
             adapter = productAdapter
@@ -93,24 +84,28 @@ class CatalogoActivity : AppCompatActivity() {
     }
 
     private fun setupSearchView() {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
+        searchView.setOnQueryTextListener(
+                object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean = false
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterProducts(newText ?: "")
-                return true
-            }
-        })
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        filterProducts(newText ?: "")
+                        return true
+                    }
+                }
+        )
     }
 
     private fun setupCategoryChips() {
         val chipTodos = findViewById<com.google.android.material.chip.Chip>(R.id.chip_todos)
         val chipRopa = findViewById<com.google.android.material.chip.Chip>(R.id.chip_ropa)
-        val chipAccesorios = findViewById<com.google.android.material.chip.Chip>(R.id.chip_accesorios)
+        val chipAccesorios =
+                findViewById<com.google.android.material.chip.Chip>(R.id.chip_accesorios)
         val chipOtros = findViewById<com.google.android.material.chip.Chip>(R.id.chip_otros)
 
         // Configurar chips para selección única
-        val chipGroup = findViewById<com.google.android.material.chip.ChipGroup>(R.id.chip_group_categories)
+        val chipGroup =
+                findViewById<com.google.android.material.chip.ChipGroup>(R.id.chip_group_categories)
 
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             when {
@@ -130,22 +125,24 @@ class CatalogoActivity : AppCompatActivity() {
     }
 
     private fun filterProducts(query: String) {
-        val filtered = if (query.isEmpty()) {
-            mockProducts
-        } else {
-            mockProducts.filter {
-                it.name.contains(query, ignoreCase = true)
-            }
-        }
+        val allProducts = ProductManager.getProducts()
+        val filtered =
+                if (query.isEmpty()) {
+                    allProducts
+                } else {
+                    allProducts.filter { it.name.contains(query, ignoreCase = true) }
+                }
         productAdapter.updateData(filtered)
     }
 
     private fun filterByCategory(category: String) {
-        val filtered = if (category == "Todos") {
-            mockProducts
-        } else {
-            mockProducts.filter { it.category == category }
-        }
+        val allProducts = ProductManager.getProducts()
+        val filtered =
+                if (category == "Todos") {
+                    allProducts
+                } else {
+                    allProducts.filter { it.category == category }
+                }
         productAdapter.updateData(filtered)
     }
 
@@ -186,11 +183,7 @@ class CatalogoActivity : AppCompatActivity() {
     private fun setSearchViewHintColor() {
         try {
             // Intenta obtener el TextView interno del SearchView
-            val searchTextViewId = resources.getIdentifier(
-                "search_src_text",
-                "id",
-                packageName
-            )
+            val searchTextViewId = resources.getIdentifier("search_src_text", "id", packageName)
 
             val searchTextView: TextView? = searchView.findViewById(searchTextViewId)
 
@@ -203,9 +196,7 @@ class CatalogoActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Establece el mensaje de bienvenida obteniendo el nombre del usuario de AuthManager.
-     */
+    /** Establece el mensaje de bienvenida obteniendo el nombre del usuario de AuthManager. */
     private fun displayWelcomeMessage() {
         val welcomeTextView: TextView = findViewById(R.id.text_welcome_message)
 

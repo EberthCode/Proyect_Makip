@@ -51,6 +51,21 @@
             android:exported="false"
             android:label="Seguimiento de Pedido"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false"
+            android:label="Panel Administrador"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddProductActivity"
+            android:exported="false"
+            android:label="Agregar Producto"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdminOrderDetailActivity"
+            android:exported="false"
+            android:label="Detalle de Pedido"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
