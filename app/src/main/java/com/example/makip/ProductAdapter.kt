@@ -36,7 +36,7 @@ class ProductAdapter(
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val productName: TextView = itemView.findViewById(R.id.text_product_name)
         private val productPrice: TextView = itemView.findViewById(R.id.text_product_price)
-        private val productImage: ImageView = itemView.findViewById(R.id.image_product)
+        private val productImage: ImageView = itemView.findViewById(R.id.product_image)
 
         fun bind(product: Product) {
             productName.text = product.name
