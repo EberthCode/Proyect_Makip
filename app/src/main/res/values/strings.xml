@@ -13,4 +13,17 @@
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="log_in">Log In</string>
+
+    <!-- Admin Product Strings -->
+    <string name="product_name_hint">Nombre del Producto</string>
+    <string name="product_price_hint">Precio</string>
+    <string name="product_category">Categoría</string>
+    <string name="product_image">Imagen del Producto</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="image_preview_description">Vista previa de la imagen</string>
+    <string name="save_product">Guardar Producto</string>
+    <string name="image_loaded">Imagen actual cargada</string>
+    <string name="uploading_image">Subiendo imagen…</string>
+    <string name="image_uploaded">Imagen subida exitosamente</string>
+    <string name="image_selected">Imagen seleccionada</string>
 </resources>
