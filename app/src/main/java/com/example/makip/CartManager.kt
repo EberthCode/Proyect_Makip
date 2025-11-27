@@ -6,18 +6,43 @@ object CartManager {
 
     fun getItems(): List<CartItem> = items
 
-    fun addProduct(product: Product, size: String = "M") {
-        val existingItem = items.find { it.product.id == product.id && it.size == size }
+    /**
+     * Adds a product with specific customization options.
+     * If an identical item exists (same product, size, color, text, images), quantity is increased.
+     */
+    fun addCartItem(
+        product: Product,
+        quantity: Int,
+        size: String? = null,
+        color: String? = null,
+        customText: String? = null,
+        customImageUris: List<String> = emptyList()
+    ) {
+        val existingItem = items.find {
+            it.product.id == product.id &&
+                    it.size == size &&
+                    it.color == color &&
+                    it.customText == customText &&
+                    it.customImageUris == customImageUris
+        }
+
         if (existingItem != null) {
-            existingItem.quantity++
+            existingItem.quantity += quantity
         } else {
-            items.add(CartItem(product, 1, size))
+            items.add(CartItem(product, quantity, size, color, customText, customImageUris))
         }
         notifyListeners()
     }
+    
+    // Deprecated or legacy support wrapper
+    fun addProduct(product: Product, size: String = "M") {
+       addCartItem(product, 1, size = size)
+    }
 
     fun increaseQuantity(item: CartItem) {
-        val existingItem = items.find { it.product.id == item.product.id && it.size == item.size }
+        // Logic relies on reference equality or finding the exact item object in the list
+        // Since we are modifying the item in place if found in UI, we can just check existence or update directly if passed by reference
+        val existingItem = items.find { it == item }
         existingItem?.let {
             it.quantity++
             notifyListeners()
@@ -25,7 +50,7 @@ object CartManager {
     }
 
     fun decreaseQuantity(item: CartItem) {
-        val existingItem = items.find { it.product.id == item.product.id && it.size == item.size }
+        val existingItem = items.find { it == item }
         existingItem?.let {
             if (it.quantity > 1) {
                 it.quantity--

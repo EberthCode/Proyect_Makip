@@ -132,7 +132,11 @@ class SplashActivity : AppCompatActivity() {
     private fun decideNextActivity() {
         val nextActivityClass =
                 if (authManager.isLoggedIn()) {
-                    CatalogoActivity::class.java // Usuario logueado: ir al catálogo
+                    if (authManager.isCurrentUserAdmin()) {
+                        AdminActivity::class.java // Admin logueado: ir al panel admin
+                    } else {
+                        CatalogoActivity::class.java // Usuario logueado: ir al catálogo
+                    }
                 } else {
                     LoginActivity::class.java // Usuario no logueado: ir a login
                 }

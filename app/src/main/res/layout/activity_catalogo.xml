@@ -84,22 +84,44 @@
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_ropa"
+                android:id="@+id/chip_tazas"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ropa"
+                android:text="Tazas"
                 android:textColor="@android:color/white"
                 app:chipBackgroundColor="#333333"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_accesorios"
+                android:id="@+id/chip_polos"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accesorios"
+                android:text="Polos"
+                android:textColor="@android:color/white"
+                app:chipBackgroundColor="#333333"
+                app:chipStrokeColor="@android:color/transparent"
+                app:checkedIconVisible="false" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_agendas"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agendas"
+                android:textColor="@android:color/white"
+                app:chipBackgroundColor="#333333"
+                app:chipStrokeColor="@android:color/transparent"
+                app:checkedIconVisible="false" />
+
+             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_tazones"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tazones"
                 android:textColor="@android:color/white"
                 app:chipBackgroundColor="#333333"
                 app:chipStrokeColor="@android:color/transparent"

@@ -2,6 +2,8 @@ package com.example.makip
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -35,18 +37,21 @@ class AdminActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_admin)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Panel Administrador"
+    }
 
-        // Botón de cerrar sesión en toolbar
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_logout -> {
-                    logout()
-                    true
-                }
-                else -> false
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_admin, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                logout()
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        toolbar.inflateMenu(R.menu.menu_admin)
     }
 
     private fun setupBottomNavigation() {
@@ -78,7 +83,7 @@ class AdminActivity : AppCompatActivity() {
                 .commit()
     }
 
-    private fun logout() {
+    fun logout() {
         val authManager = AuthManager(this)
         authManager.logout()
 

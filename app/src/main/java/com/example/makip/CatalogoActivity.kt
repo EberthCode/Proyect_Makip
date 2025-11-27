@@ -16,6 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import android.view.View
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
 
 class CatalogoActivity : AppCompatActivity() {
 
@@ -27,6 +34,18 @@ class CatalogoActivity : AppCompatActivity() {
     // Color para el hint del SearchView
     private val SEARCH_HINT_COLOR = Color.parseColor("#AAAAAA")
     private val TEXT_COLOR_WHITE = Color.WHITE
+    
+    // Variables para la seleccion de imagen
+    private var selectedImageUris = mutableListOf<Uri>()
+    private var currentImagePreviewContainer: android.widget.LinearLayout? = null
+    private var imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        if (uris.isNotEmpty()) {
+            val takenUris = uris.take(2) // Max 2 fotos
+            selectedImageUris.clear()
+            selectedImageUris.addAll(takenUris)
+            updateImagePreviews()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,15 +90,157 @@ class CatalogoActivity : AppCompatActivity() {
         // Usar ProductManager en lugar de mockProducts
         productAdapter =
                 ProductAdapter(ProductManager.getProducts()) { product ->
-                    // Añadir producto al carrito usando CartManager
-                    CartManager.addProduct(product)
-                    Toast.makeText(this, "${product.name} añadida al carrito", Toast.LENGTH_SHORT)
-                            .show()
+                    showProductCustomizationDialog(product)
                 }
 
         recyclerView.apply {
             adapter = productAdapter
             layoutManager = GridLayoutManager(this@CatalogoActivity, 2)
+        }
+    }
+    
+    private fun showProductCustomizationDialog(product: Product) {
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.dialog_product_customization, null)
+        dialog.setContentView(view)
+
+        // Referencias a vistas
+        val title = view.findViewById<TextView>(R.id.text_product_title)
+        val price = view.findViewById<TextView>(R.id.text_product_price)
+        val layoutImages = view.findViewById<View>(R.id.layout_upload_images)
+        val layoutText = view.findViewById<TextInputLayout>(R.id.input_layout_text)
+        val editText = view.findViewById<TextInputEditText>(R.id.edit_text_custom)
+        val layoutSize = view.findViewById<TextInputLayout>(R.id.input_layout_size) // Using Spinner/Dropdown logic usually, but keeping simple for now or check layout
+        val autoCompleteSize = view.findViewById<android.widget.AutoCompleteTextView>(R.id.auto_complete_size)
+        val layoutColor = view.findViewById<TextInputLayout>(R.id.input_layout_color)
+        val autoCompleteColor = view.findViewById<android.widget.AutoCompleteTextView>(R.id.auto_complete_color)
+        val quantityInput = view.findViewById<TextInputEditText>(R.id.edit_quantity)
+        val btnAddToCart = view.findViewById<MaterialButton>(R.id.btn_add_to_cart_dialog)
+        val btnUpload = view.findViewById<MaterialButton>(R.id.btn_upload_photo)
+        currentImagePreviewContainer = view.findViewById(R.id.layout_image_previews)
+
+        title.text = product.name
+        price.text = "$${product.price}"
+        
+        // Reset state
+        selectedImageUris.clear()
+        currentImagePreviewContainer?.removeAllViews()
+        
+        // Lógica de visibilidad según categoría/producto
+        val category = product.category
+        val nameLower = product.name.lowercase()
+
+        // Default visibility: GONE
+        layoutImages.visibility = View.GONE
+        layoutText.visibility = View.GONE
+        layoutSize.visibility = View.GONE
+        layoutColor.visibility = View.GONE
+
+        // Configurar campos según reglas
+        when {
+            // Tazas
+            category == "Tazas" || nameLower.contains("taza") -> {
+                layoutImages.visibility = View.VISIBLE // 1-2 fotos
+                layoutText.visibility = View.VISIBLE
+                layoutText.hint = "Texto/Dedicatoria (máx 50)"
+                layoutColor.visibility = View.VISIBLE
+                
+                // Configurar adaptador para colores de taza
+                val colors = arrayOf("Blanco", "Negro", "Interior Rojo", "Interior Azul")
+                val adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colors)
+                autoCompleteColor.setAdapter(adapter)
+                autoCompleteColor.setText(colors[0], false) // Default
+            }
+            // Polos / Camisetas
+            category == "Polos" || nameLower.contains("polo") || nameLower.contains("camiseta") -> {
+                layoutImages.visibility = View.VISIBLE // 1 foto
+                layoutText.visibility = View.VISIBLE
+                layoutText.hint = "Texto corto (opcional)"
+                layoutSize.visibility = View.VISIBLE
+                layoutColor.visibility = View.VISIBLE
+                
+                val sizes = arrayOf("S", "M", "L", "XL", "XXL")
+                val sizeAdapter = android.widget.ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, sizes)
+                autoCompleteSize.setAdapter(sizeAdapter)
+                autoCompleteSize.setText(sizes[1], false) // Default M
+
+                // Colores genéricos de ropa
+                val colors = arrayOf("Blanco", "Negro", "Gris", "Azul Marino")
+                val colorAdapter = android.widget.ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colors)
+                autoCompleteColor.setAdapter(colorAdapter)
+                 autoCompleteColor.setText(colors[0], false)
+            }
+            // Agendas / Cuadernos
+            category == "Agendas" || nameLower.contains("agenda") || nameLower.contains("cuaderno") -> {
+                layoutImages.visibility = View.VISIBLE // 1 foto portada
+                layoutText.visibility = View.VISIBLE
+                layoutText.hint = "Nombre o frase en portada"
+                // Color solo si hay opciones, asumimos sí
+                 layoutColor.visibility = View.VISIBLE
+                 val colors = arrayOf("Negro", "Azul", "Rojo", "Marrón")
+                 val colorAdapter = android.widget.ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colors)
+                 autoCompleteColor.setAdapter(colorAdapter)
+                 autoCompleteColor.setText(colors[0], false)
+            }
+            // Tazones / Vasos
+            category == "Tazones" || nameLower.contains("tazón") || nameLower.contains("vaso") -> {
+                layoutImages.visibility = View.VISIBLE
+                layoutText.visibility = View.VISIBLE
+                layoutText.hint = "Texto corto"
+            }
+            // Otros
+            else -> {
+                 layoutImages.visibility = View.VISIBLE
+                 layoutText.visibility = View.VISIBLE
+                 layoutText.hint = "Texto corto"
+            }
+        }
+        
+        btnUpload.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
+        }
+
+        btnAddToCart.setOnClickListener {
+            val qtyStr = quantityInput.text.toString()
+            val qty = if (qtyStr.isNotEmpty()) qtyStr.toInt() else 1
+            
+            // Recopilar datos
+            val size = if (layoutSize.visibility == View.VISIBLE) autoCompleteSize.text.toString() else null
+            val color = if (layoutColor.visibility == View.VISIBLE) autoCompleteColor.text.toString() else null
+            val text = if (layoutText.visibility == View.VISIBLE) editText.text.toString() else null
+            
+            // Validaciones básicas
+            if (layoutText.visibility == View.VISIBLE && nameLower.contains("taza") && (text?.length ?: 0) > 50) {
+                 layoutText.error = "Máximo 50 caracteres"
+                 return@setOnClickListener
+            }
+
+            CartManager.addCartItem(
+                product = product,
+                quantity = qty,
+                size = size,
+                color = color,
+                customText = text,
+                customImageUris = selectedImageUris.map { it.toString() }
+            )
+            
+            Toast.makeText(this, "${product.name} agregado al carrito", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+    
+    private fun updateImagePreviews() {
+        currentImagePreviewContainer?.removeAllViews()
+        selectedImageUris.forEach { uri ->
+            val imageView = ImageView(this)
+            val params = android.widget.LinearLayout.LayoutParams(150, 150)
+            params.setMargins(0, 0, 16, 0)
+            imageView.layoutParams = params
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            imageView.setImageURI(uri)
+            currentImagePreviewContainer?.addView(imageView)
         }
     }
 
@@ -97,21 +258,16 @@ class CatalogoActivity : AppCompatActivity() {
     }
 
     private fun setupCategoryChips() {
-        val chipTodos = findViewById<com.google.android.material.chip.Chip>(R.id.chip_todos)
-        val chipRopa = findViewById<com.google.android.material.chip.Chip>(R.id.chip_ropa)
-        val chipAccesorios =
-                findViewById<com.google.android.material.chip.Chip>(R.id.chip_accesorios)
-        val chipOtros = findViewById<com.google.android.material.chip.Chip>(R.id.chip_otros)
-
-        // Configurar chips para selección única
         val chipGroup =
                 findViewById<com.google.android.material.chip.ChipGroup>(R.id.chip_group_categories)
 
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             when {
                 checkedIds.contains(R.id.chip_todos) -> filterByCategory("Todos")
-                checkedIds.contains(R.id.chip_ropa) -> filterByCategory("Ropa")
-                checkedIds.contains(R.id.chip_accesorios) -> filterByCategory("Accesorios")
+                checkedIds.contains(R.id.chip_tazas) -> filterByCategory("Tazas")
+                checkedIds.contains(R.id.chip_polos) -> filterByCategory("Polos")
+                checkedIds.contains(R.id.chip_agendas) -> filterByCategory("Agendas")
+                checkedIds.contains(R.id.chip_tazones) -> filterByCategory("Tazones")
                 checkedIds.contains(R.id.chip_otros) -> filterByCategory("Otros")
                 else -> filterByCategory("Todos") // Por defecto mostrar todos
             }

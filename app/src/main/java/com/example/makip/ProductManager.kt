@@ -44,52 +44,66 @@ object ProductManager {
                 listOf(
                         Product(
                                 1,
-                                "Camiseta Básica",
-                                25.00,
-                                "Ropa",
-                                "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
-                        ),
-                        Product(
-                                2,
-                                "Sudadera Premium",
-                                45.00,
-                                "Ropa",
-                                "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400"
-                        ),
-                        Product(
-                                3,
-                                "Gorra Deportiva",
-                                20.00,
-                                "Accesorios",
-                                "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400"
-                        ),
-                        Product(
-                                4,
-                                "Taza Térmica",
+                                "Taza Blanca Personalizada",
                                 15.00,
-                                "Otros",
+                                "Tazas",
                                 "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400"
                         ),
                         Product(
-                                5,
-                                "Bolso de Mano",
+                                2,
+                                "Taza Mágica",
+                                20.00,
+                                "Tazas",
+                                "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=400"
+                        ),
+                        Product(
+                                3,
+                                "Polo Algodón Estampado",
+                                35.00,
+                                "Polos",
+                                "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
+                        ),
+                        Product(
+                                4,
+                                "Camiseta Deportiva",
                                 30.00,
-                                "Accesorios",
-                                "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400"
+                                "Polos",
+                                "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=400"
+                        ),
+                        Product(
+                                5,
+                                "Agenda Ejecutiva 2024",
+                                25.00,
+                                "Agendas",
+                                "https://images.unsplash.com/photo-1544816155-12df9643f363?w=400"
                         ),
                         Product(
                                 6,
-                                "Pegatina Pack",
-                                5.00,
-                                "Otros",
-                                "https://images.unsplash.com/photo-1611532736570-dea7ee43db88?w=400"
+                                "Cuaderno Personalizado",
+                                18.00,
+                                "Agendas",
+                                "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400"
                         ),
                         Product(
                                 7,
-                                "Llavero Metal",
+                                "Tazón Grande",
+                                22.00,
+                                "Tazones",
+                                "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=400"
+                        ),
+                        Product(
+                                8,
+                                "Llavero Acrílico",
                                 8.00,
                                 "Otros",
                                 "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400"
+                        ),
+                        Product(
+                                9,
+                                "Gorra Bordada",
+                                25.00,
+                                "Otros",
+                                "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400"
                         )
                 )
         )

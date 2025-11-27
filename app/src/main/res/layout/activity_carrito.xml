@@ -135,16 +135,21 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_checkout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="Pagar"
+        android:backgroundTint="@color/whatsapp_green"
+        android:text="Terminar pedido por WhatsApp"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:padding="12dp"
+        app:icon="@drawable/ic_whatsapp"
+        app:iconGravity="textStart"
+        app:iconTint="@android:color/white"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
