@@ -6,7 +6,7 @@
     android:id="@+id/main_perfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="@android:color/white"
     tools:context=".PerfilActivity">
 
     <ImageButton
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@color/black"
         android:contentDescription="Volver"
         android:padding="8dp"
         android:src="@drawable/ic_arrow_back_white"
@@ -29,7 +29,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
         android:text="Mi Perfil"
-        android:textColor="@android:color/white"
+        android:textColor="@color/teal_200"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btn_back"
@@ -43,9 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
-        android:textColor="#AAAAAA"
+        android:textColor="@color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_perfil_title"
         tools:text="Usuario: Invitado Makip" />
@@ -71,7 +72,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="Cuenta"
-                android:textColor="#888888" />
+                android:textColor="@color/black" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                         android:layout_height="1dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:background="#333333" />
+                        android:background="@color/darker_gray" />
 
                     <include
                         android:id="@+id/option_change_password"
@@ -112,7 +113,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="Preferencias y Soporte"
-                android:textColor="#888888" />
+                android:textColor="@color/black" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -137,7 +138,7 @@
                         android:layout_height="1dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:background="#333333" />
+                        android:background="@color/darker_gray" />
 
                     <include
                         android:id="@+id/option_support"
@@ -152,7 +153,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="24dp"
-                android:backgroundTint="#FF4444"
+                android:backgroundTint="@color/teal_700"
                 android:paddingVertical="14dp"
                 android:text="Cerrar Sesión"
                 android:textColor="@android:color/white"

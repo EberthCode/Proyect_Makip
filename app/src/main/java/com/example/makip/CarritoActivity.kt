@@ -178,9 +178,9 @@ class CarritoActivity : AppCompatActivity() {
             val shipping = cartViewModel.getShipping()
             val total = subtotal + shipping
 
-            textSubtotal.text = "$${"%.2f".format(subtotal)}"
-            textShipping.text = "$${"%.2f".format(shipping)}"
-            textTotal.text = "$${"%.2f".format(total)}"
+            textSubtotal.text = "S/${"%.2f".format(subtotal)}"
+            textShipping.text = "S/${"%.2f".format(shipping)}"
+            textTotal.text = "S/${"%.2f".format(total)}"
 
             Log.d(TAG, "Totales actualizados: Subtotal=$$subtotal, Total=$$total")
         } catch (e: Exception) {

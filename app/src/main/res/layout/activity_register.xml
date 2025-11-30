@@ -6,14 +6,14 @@
     android:id="@+id/main_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="@android:color/white"
     tools:context=".RegisterActivity">
 
     <ImageButton
         android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@color/black"
         android:contentDescription="@string/go_back"
         android:padding="8dp"
         android:src="@drawable/ic_arrow_back_white"
@@ -26,8 +26,8 @@
         android:id="@+id/text_sign_up_title_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up"
-        android:textColor="@android:color/white"
+        android:text="Registrate"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/button_back"
@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:text="@string/create_your_account"
-        android:textColor="@android:color/white"
+        android:text="Crea tu cuenta"
+        android:textColor="@color/teal_200"
         android:textSize="32sp"
         android:textStyle="bold"
 
@@ -54,8 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/start_designing_prompt"
-        android:textColor="#AAAAAA"
+        android:text="Empieza a personalizar tus propios productos"
+        android:textColor="@color/darker_gray"
         android:textSize="16sp"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -80,10 +80,11 @@
             android:id="@+id/edit_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="Nombre completo"
             android:inputType="textPersonName"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="#888888"
+            app:boxStrokeColor="@color/teal_200"
             android:paddingVertical="18dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,8 +108,9 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="#888888"
+            app:boxStrokeColor="@color/teal_200"
             android:paddingVertical="18dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,8 +136,9 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="#888888"
+            app:boxStrokeColor="@color/teal_200"
             android:paddingVertical="18dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,11 +148,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:paddingVertical="16dp"
-        android:text="@string/create_account"
+        android:text="Registrarse"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:backgroundTint="@android:color/black"
+        app:backgroundTint="@color/teal_700"
         app:cornerRadius="8dp"
 
         android:layout_marginStart="24dp"  android:layout_marginEnd="24dp"    app:layout_constraintEnd_toEndOf="parent"
@@ -170,8 +173,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/agreement_text"
-            android:textColor="#AAAAAA"
+            android:text="Al crear tu cuenta, aceptas los"
+            android:textColor="@color/darker_gray"
             android:textSize="14sp"/>
 
         <LinearLayout
@@ -184,8 +187,8 @@
                 android:id="@+id/text_terms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/terms_of_service"
-                android:textColor="@android:color/white"
+                android:text="Términos y condiciones"
+                android:textColor="@color/teal_200"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:clickable="true"
@@ -194,7 +197,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" and "
+                android:text=" y "
                 android:textColor="#AAAAAA"
                 android:textSize="14sp"/>
 
@@ -202,8 +205,8 @@
                 android:id="@+id/text_privacy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/privacy_policy"
-                android:textColor="@android:color/white"
+                android:text="Política de privacidad"
+                android:textColor="@color/teal_200"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:clickable="true"
@@ -224,16 +227,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" already_have_account? "
-            android:textColor="#AAAAAA"
+            android:text=" ¿Ya tienes una cuenta? "
+            android:textColor="@color/darker_gray"
             android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/text_log_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/log_in"
-            android:textColor="#FFFFFF"
+            android:text="Iniciar sesión"
+            android:textColor="@color/teal_200"
             android:textSize="16sp"
             android:textStyle="bold"
             android:clickable="true"

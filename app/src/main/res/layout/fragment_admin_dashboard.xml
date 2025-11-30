@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:fillViewport="true">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dashboard"
-            android:textColor="@android:color/white"
+            android:textColor="@color/teal_700"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/purple_700"
+                app:cardBackgroundColor="@color/teal_200"
                 app:cardCornerRadius="8dp"
                 tools:ignore="MissingClass">
 
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/purple_700"
+                app:cardBackgroundColor="@color/teal_200"
                 app:cardCornerRadius="8dp"
                 tools:ignore="MissingClass">
 
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/purple_700"
+                app:cardBackgroundColor="@color/teal_200"
                 app:cardCornerRadius="8dp"
                 tools:ignore="MissingClass">
 
@@ -143,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Actividad Reciente"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="24dp"
