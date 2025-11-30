@@ -3,8 +3,10 @@ package com.example.makip
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 
 class OrderItemAdapter(private val items: List<CartItem>) :
     RecyclerView.Adapter<OrderItemAdapter.OrderViewHolder>() {
@@ -13,6 +15,7 @@ class OrderItemAdapter(private val items: List<CartItem>) :
         val tvProductName: TextView = itemView.findViewById(R.id.text_product_name)
         val tvProductPrice: TextView = itemView.findViewById(R.id.text_product_price)
         val tvProductSize: TextView? = itemView.findViewById(R.id.text_product_size)
+        val productImage: ImageView = itemView.findViewById(R.id.product_image)
         // Usamos los mismos IDs que item_product_card.xml
         // Nota: item_product_card tiene botones de eliminar/cantidad que quizás queramos ocultar aquí,
         // pero por ahora solo llenaremos los datos de texto.
@@ -36,6 +39,17 @@ class OrderItemAdapter(private val items: List<CartItem>) :
         holder.tvProductName.text = "${item.product.name} (x${item.quantity})"
         holder.tvProductPrice.text = "S/${item.getTotalPrice()}"
         holder.tvProductSize?.text = "Talla: ${item.size}"
+
+        // Cargar imagen del producto
+        if (item.product.imageUrl.isNotEmpty()) {
+            holder.productImage.load(item.product.imageUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_product_placeholder)
+                error(R.drawable.ic_product_placeholder)
+            }
+        } else {
+            holder.productImage.setImageResource(R.drawable.ic_product_placeholder)
+        }
     }
 
     override fun getItemCount() = items.size

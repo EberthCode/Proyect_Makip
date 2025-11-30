@@ -41,7 +41,7 @@ class PedidoViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun enviarPedidoWhatsApp(pedidoId: Long, celularNegocio: String = "51999999999") {
+    fun enviarPedidoWhatsApp(pedidoId: Long, celularNegocio: String = "51981390836") {
         viewModelScope.launch {
             val pedido = repository.obtenerPedido(pedidoId) ?: return@launch // Necesitas getPedidoById en DAO
             val fotos = repository.obtenerFotosDePedido(pedidoId)

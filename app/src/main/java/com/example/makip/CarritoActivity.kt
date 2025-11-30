@@ -35,9 +35,10 @@ class CarritoActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-            // Configurar barra de estado NEGRA con iconos BLANCOS
+            // Configurar barra de estado transparente con iconos NEGROS
+            window.statusBarColor = android.graphics.Color.TRANSPARENT
             val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-            windowInsetsController.isAppearanceLightStatusBars = false
+            windowInsetsController.isAppearanceLightStatusBars = true
             windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
         super.onCreate(savedInstanceState)
             // SIMPLE: El sistema reserva automáticamente el espacio para las barras
@@ -134,16 +135,70 @@ class CarritoActivity : AppCompatActivity() {
                 if (currentItems.isNullOrEmpty()) {
                     Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Crear Orden
-                    createOrder(currentItems)
-
-                    Toast.makeText(this, "¡Compra realizada con éxito!", Toast.LENGTH_LONG).show()
-                    cartViewModel.clearCart()
-                    finish()
+                    // Enviar pedido por WhatsApp
+                    enviarPedidoWhatsApp(currentItems)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error en checkout: ${e.message}")
             }
+        }
+    }
+
+    private fun enviarPedidoWhatsApp(items: List<CartItem>) {
+        val subtotal = cartViewModel.getSubtotal()
+        val shipping = cartViewModel.getShipping()
+        val total = subtotal + shipping
+
+        // Construir el mensaje
+        val sb = StringBuilder()
+        sb.append("Hola Makip! 🎁 Quiero realizar el siguiente pedido:\n\n")
+        sb.append("*MI PEDIDO*\n")
+        sb.append("================================\n\n")
+        
+        items.forEachIndexed { index, item ->
+            sb.append("*${index + 1}. ${item.product.name}*\n")
+            sb.append("💰 Precio: S/${String.format("%.2f", item.product.price)}\n")
+            sb.append("🔢 Cantidad: ${item.quantity}\n")
+            
+            if (!item.size.isNullOrEmpty()) {
+                sb.append("📏 Talla: ${item.size}\n")
+            }
+            if (!item.color.isNullOrEmpty()) {
+                sb.append("🎨 Color: ${item.color}\n")
+            }
+            if (!item.customText.isNullOrEmpty()) {
+                sb.append("✍️ Texto personalizado: ${item.customText}\n")
+            }
+            
+            val itemTotal = item.product.price * item.quantity
+            sb.append("💵 Subtotal: S/${String.format("%.2f", itemTotal)}\n")
+            sb.append("--------------------------------\n")
+        }
+        
+        sb.append("\n*RESUMEN DEL PEDIDO*\n")
+        sb.append("================================\n")
+        sb.append("Subtotal: S/${String.format("%.2f", subtotal)}\n")
+        sb.append("Envío: S/${String.format("%.2f", shipping)}\n")
+        sb.append("*TOTAL: S/${String.format("%.2f", total)}*\n\n")
+        sb.append("¡Espero tu respuesta! 😊")
+
+        val mensaje = sb.toString()
+        val numeroTelefono = "51981390836" // Número de WhatsApp de Makip
+
+        try {
+            val url = "https://api.whatsapp.com/send?phone=$numeroTelefono&text=${java.net.URLEncoder.encode(mensaje, "UTF-8")}"
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                data = android.net.Uri.parse(url)
+            }
+            startActivity(intent)
+            
+            // Opcional: Crear orden local para historial
+            createOrder(items)
+            
+            Toast.makeText(this, "Abriendo WhatsApp...", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error al abrir WhatsApp: ${e.message}")
+            Toast.makeText(this, "No se pudo abrir WhatsApp. ¿Está instalado?", Toast.LENGTH_LONG).show()
         }
     }
 

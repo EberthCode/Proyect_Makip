@@ -8,8 +8,8 @@
     <color name="primary_dark">#004D40</color>
     <color name="primary">#00796B</color>
     <color name="primary_light">#009688</color>
-    <color name="accent">#FF6F00</color>
-    <color name="accent_light">#FFA726</color>
+    <color name="accent">#1976D2</color>
+    <color name="accent_light">#42A5F5</color>
 
     <!-- Colores de fondo -->
     <color name="background_main">#ECEFF1</color>
@@ -25,7 +25,7 @@
     <!-- Estados y elementos UI -->
     <color name="divider">#E0E0E0</color>
     <color name="success">#4CAF50</color>
-    <color name="warning">#FF9800</color>
+    <color name="warning">#FFC107</color>
     <color name="error">#F44336</color>
     <color name="info">#2196F3</color>
 

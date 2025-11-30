@@ -20,6 +20,11 @@ class AdminActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Configurar barra de estado transparente con iconos NEGROS
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
 
         // SIMPLE: El sistema reserva automáticamente el espacio para las barras
         WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -29,7 +34,7 @@ class AdminActivity : AppCompatActivity() {
         
         authManager = AuthManager(this)
         setupToolbar()
-
+        setupBottomNavigation()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -42,6 +47,36 @@ class AdminActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_admin)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Panel Administrador"
+    }
+
+    private fun setupBottomNavigation() {
+        val bottomNav = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_nav_admin)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_admin_dashboard -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_admin, AdminDashboardFragment())
+                        .commit()
+                    supportActionBar?.title = "Dashboard"
+                    true
+                }
+                R.id.nav_admin_inventory -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_admin, AdminInventoryFragment())
+                        .commit()
+                    supportActionBar?.title = "Inventario"
+                    true
+                }
+                R.id.nav_admin_orders -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_admin, AdminOrdersFragment())
+                        .commit()
+                    supportActionBar?.title = "Pedidos"
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -18,9 +18,10 @@ class PerfilActivity : AppCompatActivity() {
     private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Configurar barra de estado NEGRA con iconos BLANCOS
+        // Configurar barra de estado transparente con iconos NEGROS
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false
+        windowInsetsController.isAppearanceLightStatusBars = true
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
 
 
@@ -121,6 +122,7 @@ class PerfilActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 }

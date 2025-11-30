@@ -26,6 +26,14 @@ class AdminOrderDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Configurar barra de estado transparente con iconos NEGROS
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, true)
+        val windowInsetsController = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
+        windowInsetsController.show(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+
         setContentView(R.layout.activity_admin_order_detail)
 
         orderId = intent.getStringExtra("ORDER_ID") ?: ""

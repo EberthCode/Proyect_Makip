@@ -29,17 +29,16 @@ class TrackingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            enableEdgeToEdge() // Activar Borde a Borde
+            // Configurar barra de estado transparente con iconos NEGROS
+            window.statusBarColor = android.graphics.Color.TRANSPARENT
+            androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, true)
+            val windowInsetsController = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+            windowInsetsController.isAppearanceLightStatusBars = true
+            windowInsetsController.show(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+
             setContentView(R.layout.activity_tracking)
 
-            // Ajustar padding para barras de sistema
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_tracking)) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            }
-
-            setupToolbar()
+            setupBackButton()
             setupTimelineViews()
             loadOrderData()
         } catch (e: Exception) {
@@ -49,11 +48,11 @@ class TrackingActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupToolbar() {
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarTracking)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+    private fun setupBackButton() {
+        val btnBack = findViewById<android.widget.ImageButton>(R.id.btn_back_tracking)
+        btnBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupTimelineViews() {

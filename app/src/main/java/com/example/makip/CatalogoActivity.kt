@@ -58,10 +58,10 @@ class CatalogoActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         setContentView(R.layout.activity_catalogo)
 
-        // Configurar barra de estado NEGRA con iconos BLANCOS
-        window.statusBarColor = ContextCompat.getColor(this, R.color.black)
+        // Configurar barra de estado transparente con iconos NEGROS
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false
+        windowInsetsController.isAppearanceLightStatusBars = true
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
 
         searchView = findViewById(R.id.search_bar)

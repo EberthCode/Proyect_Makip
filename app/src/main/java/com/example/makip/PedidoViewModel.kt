@@ -93,7 +93,7 @@ class PedidoViewModel(application: Application) : AndroidViewModel(application) 
             }
 
             val mensaje = sb.toString()
-            val numeroTelefono = "51999888777" // TU NÚMERO DE WHATSAPP AQUÍ
+            val numeroTelefono = "51981390836" // Número de WhatsApp de Makip
 
             try {
                 val url = "https://api.whatsapp.com/send?phone=$numeroTelefono&text=${URLEncoder.encode(mensaje, "UTF-8")}"
