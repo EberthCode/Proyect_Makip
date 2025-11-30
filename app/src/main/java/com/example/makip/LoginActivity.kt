@@ -4,11 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
@@ -22,17 +18,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // El tema y fitsSystemWindows en XML manejan las barras automáticamente
         setContentView(R.layout.activity_login)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_login)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false
 
         authManager = AuthManager(this)
 
@@ -54,8 +41,7 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, ingresa email y contraseña.", Toast.LENGTH_SHORT)
-                    .show()
+            Toast.makeText(this, "Por favor, ingresa email y contraseña.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -74,17 +60,11 @@ class LoginActivity : AppCompatActivity() {
             authManager.setLoggedIn(true)
             authManager.setUserRole(AuthManager.ROLE_USER)
             val name = authManager.getUserName()
-            Toast.makeText(this, "Inicio de sesión exitoso. Bienvenido, $name!", Toast.LENGTH_LONG)
-                    .show()
+            Toast.makeText(this, "Inicio de sesión exitoso. Bienvenido, $name!", Toast.LENGTH_LONG).show()
             startActivity(Intent(this, CatalogoActivity::class.java))
             finish()
         } else {
-            Toast.makeText(
-                            this,
-                            "Credenciales incorrectas o usuario no registrado.",
-                            Toast.LENGTH_LONG
-                    )
-                    .show()
+            Toast.makeText(this, "Credenciales incorrectas o usuario no registrado.", Toast.LENGTH_LONG).show()
         }
     }
 }

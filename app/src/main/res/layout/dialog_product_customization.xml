@@ -1,47 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="24dp"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#E0E0E0"/>
 
     <TextView
         android:id="@+id/text_product_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nombre del Producto"
-        android:textSize="20sp"
+        android:textSize="22sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/text_product_price"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        
+        android:textColor="@color/teal_700"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Sección de Imágenes -->
     <LinearLayout
         android:id="@+id/layout_upload_images"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginBottom="16dp">
         
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Sube tus fotos de referencia"
+            android:textColor="@color/black"
             android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
             
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_upload_photo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Seleccionar Fotos"
+            android:textColor="@color/teal_700"
+            app:strokeColor="@color/teal_700"
+            app:strokeWidth="1dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
             
         <LinearLayout
             android:id="@+id/layout_image_previews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
 
+    <!-- Campo de Texto Personalizado -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Texto personalizado">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_custom"
@@ -50,34 +84,45 @@
             android:maxLines="3"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Campo de Talla -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Talla"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="Talla">
 
         <AutoCompleteTextView
             android:id="@+id/auto_complete_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="none"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Campo de Color -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Color"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="Color">
 
         <AutoCompleteTextView
             android:id="@+id/auto_complete_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="none"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Campo de Cantidad -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cantidad"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Cantidad">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_quantity"
@@ -90,5 +135,12 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_to_cart_dialog"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Agregar al Carrito"
+        android:backgroundTint="@color/teal_700"
+        android:padding="14dp"
+        app:cornerRadius="8dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
+</LinearLayout>

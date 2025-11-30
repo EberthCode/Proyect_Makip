@@ -18,23 +18,18 @@ class PerfilActivity : AppCompatActivity() {
     private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Configurar barra de estado NEGRA con iconos BLANCOS
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = false
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+
+
+        // SIMPLE: El sistema reserva automáticamente el espacio para las barras
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         super.onCreate(savedInstanceState)
-
-        authManager = AuthManager(this)
-
-        enableEdgeToEdge()
         setContentView(R.layout.activity_perfil)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_perfil)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
-        // ----------------------------------------------------------------------
+        authManager = AuthManager(this)
 
         // Configurar la UI
         displayUserName()
@@ -59,7 +54,7 @@ class PerfilActivity : AppCompatActivity() {
     private fun displayUserName() {
         // Muestra el nombre. Si no hay nombre guardado, AuthManager devuelve "Usuario"
         val userName = authManager.getUserName()
-        findViewById<TextView>(R.id.text_user_name_detail).text = "Usuario: $userName"
+        findViewById<TextView>(R.id.text_user_name_detail).text = getString(R.string.label_user, userName)
     }
 
     /** Configura el texto y los íconos de las opciones del perfil. */
@@ -112,7 +107,6 @@ class PerfilActivity : AppCompatActivity() {
      * Ahora usa la función logout() que establece isLoggedIn a false.
      */
     private fun logoutUser() {
-
         // 1. ACCIÓN CLAVE: Borrar el estado de sesión (is_logged_in = false)
         authManager.logout()
 
@@ -122,5 +116,11 @@ class PerfilActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 }

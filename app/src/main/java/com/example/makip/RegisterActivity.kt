@@ -27,21 +27,16 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge() // Activar Borde a Borde
-        setContentView(R.layout.activity_register)
-
-        // Ajustar padding para barras de sistema (Notificaciones/Navegación)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_register)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
+        // Configurar barra de estado NEGRA con iconos BLANCOS
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
-        // ----------------------------------------------------------------------
+        windowInsetsController.isAppearanceLightStatusBars = false
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+
+
+        // SIMPLE: El sistema reserva automáticamente el espacio para las barras
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
 
         // INICIALIZAMOS EL GESTOR DE AUTENTICACIÓN
         authManager = AuthManager(this)
@@ -119,4 +114,11 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun onResume() {
+        super.onResume()
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
+
 }

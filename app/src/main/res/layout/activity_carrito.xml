@@ -6,7 +6,8 @@
     android:id="@+id/main_carrito"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/background_main"
+    android:fitsSystemWindows="true"
     tools:context=".CarritoActivity">
 
     <ImageButton
@@ -14,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/black"
         android:contentDescription="Volver"
         android:padding="8dp"

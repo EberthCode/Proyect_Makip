@@ -35,22 +35,16 @@ class CarritoActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+            // Configurar barra de estado NEGRA con iconos BLANCOS
+            val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+            windowInsetsController.isAppearanceLightStatusBars = false
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
         super.onCreate(savedInstanceState)
+            // SIMPLE: El sistema reserva automáticamente el espacio para las barras
+            WindowCompat.setDecorFitsSystemWindows(window, true)
         try {
-            enableEdgeToEdge() // Activar Borde a Borde
             setContentView(R.layout.activity_carrito)
 
-            // Ajustar padding para barras de sistema
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_carrito)) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            }
-
-            // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
-            val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-            windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
-            // ----------------------------------------------------------------------
 
             Log.d(TAG, "CarritoActivity creada")
 
@@ -72,6 +66,7 @@ class CarritoActivity : AppCompatActivity() {
             finish()
         }
     }
+
 
     private fun initViews() {
         try {
@@ -141,7 +136,7 @@ class CarritoActivity : AppCompatActivity() {
                 } else {
                     // Crear Orden
                     createOrder(currentItems)
-                    
+
                     Toast.makeText(this, "¡Compra realizada con éxito!", Toast.LENGTH_LONG).show()
                     cartViewModel.clearCart()
                     finish()
@@ -156,10 +151,10 @@ class CarritoActivity : AppCompatActivity() {
         val subtotal = cartViewModel.getSubtotal()
         val shipping = cartViewModel.getShipping()
         val total = subtotal + shipping
-        
+
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
-        
+
         val order = Order(
             id = UUID.randomUUID().toString().substring(0, 8).uppercase(),
             date = currentDate,
@@ -167,7 +162,7 @@ class CarritoActivity : AppCompatActivity() {
             items = ArrayList(items), // Copia de items
             total = total
         )
-        
+
         OrderManager.addOrder(order)
         Log.d(TAG, "Orden creada: ${order.id}")
     }

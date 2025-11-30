@@ -6,7 +6,8 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/background_main"
+    android:fitsSystemWindows="true"
     tools:context=".CatalogoActivity">
 
     <TextView
@@ -16,7 +17,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:textColor="@color/teal_700"
+        android:textColor="@color/primary"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:text="Hola, NombreUsuario"
@@ -26,12 +27,14 @@
 
     <ImageView
         android:id="@+id/icon_cart"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_shopping_cart_white"
         android:contentDescription="Carrito de compras"
-        android:background="@android:color/black"
+        android:background="@drawable/rounded_search_background"
+        android:backgroundTint="@color/primary"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/text_welcome_message"
         app:layout_constraintBottom_toBottomOf="@id/text_welcome_message"/>
@@ -80,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="Todos"
                 android:textColor="@android:color/white"
-                app:chipBackgroundColor="#333333"
+                app:chipBackgroundColor="@color/primary"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
@@ -91,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tazas"
                 android:textColor="@android:color/white"
-                app:chipBackgroundColor="#333333"
+                app:chipBackgroundColor="@color/primary"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
@@ -102,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:text="Polos"
                 android:textColor="@android:color/white"
-                app:chipBackgroundColor="#333333"
+                app:chipBackgroundColor="@color/primary"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
@@ -113,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:text="Agendas"
                 android:textColor="@android:color/white"
-                app:chipBackgroundColor="#333333"
+                app:chipBackgroundColor="@color/primary"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
@@ -124,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tazones"
                 android:textColor="@android:color/white"
-                app:chipBackgroundColor="#333333"
+                app:chipBackgroundColor="@color/primary"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
@@ -135,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:text="Otros"
                 android:textColor="@android:color/white"
-                app:chipBackgroundColor="#333333"
+                app:chipBackgroundColor="@color/primary"
                 app:chipStrokeColor="@android:color/transparent"
                 app:checkedIconVisible="false" />
 
@@ -146,11 +149,11 @@
         android:id="@+id/recycler_catalog"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/category_chips_scroll_view"
@@ -161,11 +164,13 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/teal_700"
-        app:itemIconTint="@color/selector_bottom_nav_white_grey"
-        app:itemTextColor="@color/selector_bottom_nav_white_grey"
-
-        app:labelVisibilityMode="labeled"   app:itemIconSize="30dp"            app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/background_card"
+        app:itemIconTint="@color/primary"
+        app:itemTextColor="@color/primary"
+        app:labelVisibilityMode="labeled"
+        app:itemIconSize="24dp"
+        app:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu" />

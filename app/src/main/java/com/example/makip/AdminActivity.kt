@@ -1,35 +1,40 @@
 package com.example.makip
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 
 class AdminActivity : AppCompatActivity() {
 
+
+    private lateinit var authManager: AuthManager
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // SIMPLE: El sistema reserva automáticamente el espacio para las barras
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
-
-        // Ajustar padding para barras de sistema
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_admin)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
+        
+        authManager = AuthManager(this)
         setupToolbar()
-        setupBottomNavigation()
 
-        // Cargar fragmento inicial (Dashboard)
+
         if (savedInstanceState == null) {
-            loadFragment(AdminDashboardFragment())
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_admin, AdminDashboardFragment())
+                .commit()
         }
     }
 
@@ -54,41 +59,8 @@ class AdminActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupBottomNavigation() {
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_admin)
-
-        bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_admin_dashboard -> {
-                    loadFragment(AdminDashboardFragment())
-                    true
-                }
-                R.id.nav_admin_inventory -> {
-                    loadFragment(AdminInventoryFragment())
-                    true
-                }
-                R.id.nav_admin_orders -> {
-                    loadFragment(AdminOrdersFragment())
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container_admin, fragment)
-                .commit()
-    }
-
-    fun logout() {
-        val authManager = AuthManager(this)
+    private fun logout() {
         authManager.logout()
-
-        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
-
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

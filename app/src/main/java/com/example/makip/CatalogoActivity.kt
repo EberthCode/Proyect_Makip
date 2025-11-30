@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout
 import android.view.View
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class CatalogoActivity : AppCompatActivity() {
 
@@ -53,20 +54,15 @@ class CatalogoActivity : AppCompatActivity() {
         authManager = AuthManager(this)
         cartViewModel = ViewModelProvider(this)[CartViewModel::class.java]
 
-        enableEdgeToEdge()
+        // SIMPLE: El sistema reserva automáticamente el espacio para las barras
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         setContentView(R.layout.activity_catalogo)
 
-        // Configuración de Insets (borde a borde) para evitar que se tape la UI
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_layout)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
+        // Configurar barra de estado NEGRA con iconos BLANCOS
+        window.statusBarColor = ContextCompat.getColor(this, R.color.black)
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
-        // ----------------------------------------------------------------------
+        windowInsetsController.isAppearanceLightStatusBars = false
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
 
         searchView = findViewById(R.id.search_bar)
 
@@ -76,9 +72,9 @@ class CatalogoActivity : AppCompatActivity() {
         setupSearchView()
         setupCategoryChips()
         setupBottomNavigation()
-        setupCartIcon()
-
         // Solución de color para el hint de búsqueda (ejecutar después de la inflación)
+
+        // Solución de color para el hint de búsqueda
         searchView.post { setSearchViewHintColor() }
     }
 
@@ -361,4 +357,5 @@ class CatalogoActivity : AppCompatActivity() {
 
         welcomeTextView.text = "Hola, $userName"
     }
+
 }

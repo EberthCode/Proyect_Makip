@@ -45,7 +45,11 @@ class SplashActivity : AppCompatActivity() {
         // --- CORRECCIÓN: Iconos de barra de estado en BLANCO para fondo negro ---
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.isAppearanceLightStatusBars = false // false = Iconos Blancos
+        // Para la splash queremos fullscreen — ocultar la barra de estado solo aquí
+        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
         // ----------------------------------------------------------------------
+        window.statusBarColor = resources.getColor(android.R.color.black, theme)
+
 
         // Inicializar el gestor de autenticación
         authManager = AuthManager(this)
