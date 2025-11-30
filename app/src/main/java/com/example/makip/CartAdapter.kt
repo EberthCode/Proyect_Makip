@@ -58,7 +58,7 @@ class CartAdapter(
             try {
                 productName.text = "${cartItem.product.name} personalizada"
                 productSize.text = "Talla ${cartItem.size}"
-                productPrice.text = "$${cartItem.product.price}"
+                productPrice.text = "S/${cartItem.product.price}"
                 quantityText.text = cartItem.quantity.toString()
 
                 btnIncrease.setOnClickListener { onIncreaseClick(cartItem) }

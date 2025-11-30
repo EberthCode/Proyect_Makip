@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:fillViewport="true">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:id="@+id/toolbar_order_detail"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/purple_700"
+            android:background="@color/teal_200"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:layout_marginBottom="16dp" />
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pedido #0000"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fecha: 01 Jan 2024"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/darker_gray"
             android:layout_marginTop="4dp" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Total: $0.00"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dirección: ---"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/darker_gray"
             android:layout_marginTop="8dp" />
 
         <TextView
@@ -63,14 +63,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pago: ---"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/darker_gray"
             android:layout_marginTop="4dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Productos"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="24dp"
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Estado del Pedido"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="24dp"
@@ -96,7 +96,8 @@
             android:id="@+id/spinner_order_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_700"
+            android:background="@color/white"
+            app:boxStrokeColor="@color/teal_200"
             android:padding="12dp" />
 
         <Button
@@ -105,7 +106,7 @@
             android:layout_height="wrap_content"
             android:text="Actualizar Estado"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/purple_700"
+            android:backgroundTint="@color/teal_700"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

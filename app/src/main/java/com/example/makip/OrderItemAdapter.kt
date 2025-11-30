@@ -34,7 +34,7 @@ class OrderItemAdapter(private val items: List<CartItem>) :
 
         // Asignamos los datos
         holder.tvProductName.text = "${item.product.name} (x${item.quantity})"
-        holder.tvProductPrice.text = "$${item.getTotalPrice()}"
+        holder.tvProductPrice.text = "S/${item.getTotalPrice()}"
         holder.tvProductSize?.text = "Talla: ${item.size}"
     }
 

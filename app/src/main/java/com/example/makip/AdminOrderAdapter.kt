@@ -31,7 +31,7 @@ class AdminOrderAdapter(
 
         holder.textOrderId.text = "Pedido #${order.id}"
         holder.textOrderDate.text = order.date
-        holder.textOrderTotal.text = "$${String.format("%.2f", order.total)}"
+        holder.textOrderTotal.text = "S/${String.format("%.2f", order.total)}"
 
         // Estado y color
         val (statusText, statusColor) =

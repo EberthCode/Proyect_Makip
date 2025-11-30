@@ -46,7 +46,7 @@ class AdminProductAdapter(
         }
 
         holder.textName.text = product.name
-        holder.textPrice.text = "$${String.format("%.2f", product.price)}"
+        holder.textPrice.text = "S/${String.format("%.2f", product.price)}"
         holder.textCategory.text = product.category
 
         holder.btnEdit.setOnClickListener { onEditClick(product) }

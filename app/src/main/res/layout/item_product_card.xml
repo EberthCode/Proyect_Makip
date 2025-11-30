@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/black"
+    app:cardBackgroundColor="@color/darker_gray"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/teal_200"
         android:padding="12dp">
 
         <!-- Imagen del Producto -->
@@ -44,7 +45,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="@android:color/white"
+            android:textColor="@color/teal_700"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,12 +60,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:textColor="#CCCCCC"
+            android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_product_name"
-            tools:text="$25.00" />
+            tools:text="S/25.00" />
 
         <!-- Elementos ocultos por defecto (para reutilizar el layout si es necesario) -->
         <TextView

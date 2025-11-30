@@ -40,7 +40,7 @@ class ProductAdapter(
 
         fun bind(product: Product) {
             productName.text = product.name
-            productPrice.text = "$${product.price}"
+            productPrice.text = "S/${product.price}"
 
             // Cargar imagen con Coil desde URL
             if (product.imageUrl.isNotEmpty()) {

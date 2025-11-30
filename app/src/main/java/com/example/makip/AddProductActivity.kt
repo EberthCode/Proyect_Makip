@@ -169,7 +169,7 @@ class AddProductActivity : AppCompatActivity() {
                 }
 
                 // Subir a ImageKit
-                val imageUrl = ImageKitUploader.subirFoto(
+                val imageUrl: String? = ImageKitUploader.subirFoto(
                     tempFile.absolutePath,
                     "makip_productos"
                 )
